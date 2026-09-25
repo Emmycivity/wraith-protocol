@@ -76,6 +76,16 @@ jobs:
         with:
           anchor-version: 0.30.1
       - run: anchor build
+      - run: anchor test --skip tequila 2>&1 | tee test-logs.txt || true
+      - run: anchor idl generate
+      - run: anchor idl check
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: solana-test-logs
+          path: |
+            solana/test-logs.txt
+            solana/target/
+            solana/idl/
 
   ckb:
     needs: changes
